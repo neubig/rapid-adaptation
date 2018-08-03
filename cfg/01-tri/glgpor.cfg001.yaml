@@ -1,0 +1,65 @@
+# standard settings + BPE
+glgpor.cfg001: !Experiment
+  exp_global: !ExpGlobal
+    default_layer_dim: 512
+    dropout: 0.3
+    log_file: 'results/01-tri/{EXP}.log'
+    model_file: 'results/01-tri/{EXP}.mod'
+  model: !DefaultTranslator
+    src_reader: !PlainTextReader
+      vocab: !Vocab {vocab_file: 'data/glgpor_eng/ted-train.orig.spm8000.glgpor.vocab'}
+    trg_reader: !PlainTextReader
+      vocab: !Vocab {vocab_file: 'data/glgpor_eng/ted-train.mtok.spm8000.eng.vocab'}
+    src_embedder: !SimpleWordEmbedder
+      emb_dim: 128
+    encoder: !BiLSTMSeqTransducer
+      layers: 1
+    attender: !MlpAttender {}
+    trg_embedder: !SimpleWordEmbedder
+      emb_dim: 128
+    decoder: !MlpSoftmaxDecoder
+      bridge: !CopyBridge {}
+    inference: !SimpleInference
+      search_strategy: !BeamSearch
+        len_norm: !PolynomialNormalization
+          apply_during_search: True
+        beam_size: 5
+      post_process: join-piece
+  train: !SimpleTrainingRegimen
+    trainer: !AdamTrainer
+      alpha: 0.001
+    batcher: !WordSrcBatcher
+      avg_batch_size: 64
+    run_for_epochs: 20
+    src_file: 'data/glgpor_eng/ted-train.orig.spm8000.glgpor'
+    trg_file: 'data/glgpor_eng/ted-train.mtok.spm8000.eng'
+    dev_tasks:
+      - !AccuracyEvalTask
+        eval_metrics: bleu
+        src_file: 'data/glgpor_eng/ted-dev.orig.spm8000.glg'
+        ref_file: 'data/glg_eng/ted-dev.mtok.eng'
+        hyp_file: 'results/01-tri/{EXP}.glg.dev_hyp'
+      - !LossEvalTask
+        src_file: 'data/glg_eng/ted-dev.orig.spm8000.glg'
+        ref_file: 'data/glg_eng/ted-dev.mtok.spm8000.eng'
+  evaluate:
+    - !AccuracyEvalTask
+      eval_metrics: bleu
+      src_file: 'data/glgpor_eng/ted-dev.orig.spm8000.glg'
+      ref_file: 'data/glg_eng/ted-dev.mtok.eng'
+      hyp_file: 'results/01-tri/{EXP}.glg.dev_hyp'
+    - !AccuracyEvalTask
+      eval_metrics: bleu
+      src_file: 'data/glgpor_eng/ted-test.orig.spm8000.glg'
+      ref_file: 'data/glg_eng/ted-test.mtok.eng'
+      hyp_file: 'results/01-tri/{EXP}.glg.tst_hyp'
+    - !AccuracyEvalTask
+      eval_metrics: bleu
+      src_file: 'data/glgpor_eng/ted-dev.orig.spm8000.por'
+      ref_file: 'data/por_eng/ted-dev.mtok.eng'
+      hyp_file: 'results/01-tri/{EXP}.por.dev_hyp'
+    - !AccuracyEvalTask
+      eval_metrics: bleu
+      src_file: 'data/glgpor_eng/ted-test.orig.spm8000.por'
+      ref_file: 'data/por_eng/ted-test.mtok.eng'
+      hyp_file: 'results/01-tri/{EXP}.por.tst_hyp'

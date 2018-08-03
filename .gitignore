@@ -1,0 +1,7 @@
+slurm-*
+*.log
+data
+log
+spm
+results
+archive

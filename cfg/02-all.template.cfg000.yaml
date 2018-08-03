@@ -1,0 +1,99 @@
+# standard settings + BPE
+all.CFGID: !Experiment
+  exp_global: !ExpGlobal
+    default_layer_dim: 512
+    dropout: 0.3
+    log_file: 'results/02-all/{EXP}.log'
+    model_file: 'results/02-all/{EXP}.mod'
+  model: !DefaultTranslator
+    src_reader: !PlainTextReader
+      vocab: !Vocab {vocab_file: 'data/all_eng/ted-train.orig.sepspm8000.all.vocab'}
+    trg_reader: !PlainTextReader
+      vocab: !Vocab {vocab_file: 'data/all_eng/ted-train.mtok.spm8000.eng.vocab'}
+    src_embedder: !SimpleWordEmbedder
+      emb_dim: 128
+    encoder: !BiLSTMSeqTransducer
+      layers: 1
+    attender: !MlpAttender {}
+    trg_embedder: !SimpleWordEmbedder
+      emb_dim: 128
+    decoder: !MlpSoftmaxDecoder
+      bridge: !CopyBridge {}
+    inference: !SimpleInference
+      search_strategy: !BeamSearch
+        len_norm: !PolynomialNormalization
+          apply_during_search: True
+        beam_size: 5
+      post_process: join-piece
+  train: !SimpleTrainingRegimen
+    trainer: !AdamTrainer
+      alpha: 0.001
+    batcher: !WordSrcBatcher
+      avg_batch_size: 64
+    run_for_epochs: 20
+    src_file: 'data/all_eng/ted-train.orig.sepspm8000.all'
+    trg_file: 'data/all_eng/ted-train.mtok.spm8000.eng'
+    dev_combinator: 'x[0]+x[1]+x[2]+x[3]'
+    dev_tasks:
+      - !AccuracyEvalTask
+        eval_metrics: bleu
+        src_file: 'data/aze_eng/ted-dev.orig.spm8000.aze'
+        ref_file: 'data/aze_eng/ted-dev.mtok.eng'
+        hyp_file: 'results/02-all/{EXP}.aze.dev_hyp'
+      - !AccuracyEvalTask
+        eval_metrics: bleu
+        src_file: 'data/bel_eng/ted-dev.orig.spm8000.bel'
+        ref_file: 'data/bel_eng/ted-dev.mtok.eng'
+        hyp_file: 'results/02-all/{EXP}.bel.dev_hyp'
+      - !AccuracyEvalTask
+        eval_metrics: bleu
+        src_file: 'data/glg_eng/ted-dev.orig.spm8000.glg'
+        ref_file: 'data/glg_eng/ted-dev.mtok.eng'
+        hyp_file: 'results/02-all/{EXP}.glg.dev_hyp'
+      - !AccuracyEvalTask
+        eval_metrics: bleu
+        src_file: 'data/slk_eng/ted-dev.orig.spm8000.slk'
+        ref_file: 'data/slk_eng/ted-dev.mtok.eng'
+        hyp_file: 'results/02-all/{EXP}.slk.dev_hyp'
+  evaluate:
+    - !AccuracyEvalTask
+      eval_metrics: bleu
+      src_file: 'data/aze_eng/ted-dev.orig.spm8000.aze'
+      ref_file: 'data/aze_eng/ted-dev.mtok.eng'
+      hyp_file: 'results/02-all/{EXP}.aze.dev_hyp'
+    - !AccuracyEvalTask
+      eval_metrics: bleu
+      src_file: 'data/bel_eng/ted-dev.orig.spm8000.bel'
+      ref_file: 'data/bel_eng/ted-dev.mtok.eng'
+      hyp_file: 'results/02-all/{EXP}.bel.dev_hyp'
+    - !AccuracyEvalTask
+      eval_metrics: bleu
+      src_file: 'data/glg_eng/ted-dev.orig.spm8000.glg'
+      ref_file: 'data/glg_eng/ted-dev.mtok.eng'
+      hyp_file: 'results/02-all/{EXP}.glg.dev_hyp'
+    - !AccuracyEvalTask
+      eval_metrics: bleu
+      src_file: 'data/slk_eng/ted-dev.orig.spm8000.slk'
+      ref_file: 'data/slk_eng/ted-dev.mtok.eng'
+      hyp_file: 'results/02-all/{EXP}.slk.dev_hyp'
+    - !AccuracyEvalTask
+      eval_metrics: bleu
+      src_file: 'data/aze_eng/ted-test.orig.spm8000.aze'
+      ref_file: 'data/aze_eng/ted-test.mtok.eng'
+      hyp_file: 'results/02-all/{EXP}.aze.dev_hyp'
+    - !AccuracyEvalTask
+      eval_metrics: bleu
+      src_file: 'data/bel_eng/ted-test.orig.spm8000.bel'
+      ref_file: 'data/bel_eng/ted-test.mtok.eng'
+      hyp_file: 'results/02-all/{EXP}.bel.dev_hyp'
+    - !AccuracyEvalTask
+      eval_metrics: bleu
+      src_file: 'data/glg_eng/ted-test.orig.spm8000.glg'
+      ref_file: 'data/glg_eng/ted-test.mtok.eng'
+      hyp_file: 'results/02-all/{EXP}.glg.dev_hyp'
+    - !AccuracyEvalTask
+      eval_metrics: bleu
+      src_file: 'data/slk_eng/ted-test.orig.spm8000.slk'
+      ref_file: 'data/slk_eng/ted-test.mtok.eng'
+      hyp_file: 'results/02-all/{EXP}.slk.dev_hyp'
+

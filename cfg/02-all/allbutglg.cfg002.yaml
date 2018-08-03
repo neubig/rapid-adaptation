@@ -1,0 +1,12 @@
+# standard settings + BPE
+allbutglg.cfg002: !LoadSerialized
+  filename: results/02-all/allbutglg.cfg001.mod
+  overwrite: # list of [path, value] pairs. Value can be scalar or an arbitrary object
+  - path: exp_global
+    val: !ExpGlobal
+      default_layer_dim: 512
+      dropout: 0.3
+      log_file: 'results/02-all/{EXP}.log'
+      model_file: 'results/02-all/{EXP}.mod'
+  - path: train # skip the training loop
+    val: null

@@ -1,0 +1,47 @@
+# standard settings + BPE
+SRC1SRC2.CFGID: !LoadSerialized
+  # This will load the contents of the above experiments that were saved to the
+  # YAML file specified after filename:
+  # This will carry out the exact same thing, except that {EXP} is resolved to
+  # a different value (making sure we don't overwrite the previous model),
+  # and except for the things explicitly overwritten in the overwrite: section.
+  # It's possible to change any settings as long as these don't change the number
+  # or nature of DyNet parameters allocated for the component.
+  filename: results/02-all/all.cfg000.mod
+  path: ''
+  overwrite: # list of [path, value] pairs. Value can be scalar or an arbitrary object
+  - path: exp_global.log_file
+    val: 'results/03-adapt/{EXP}.log'
+  - path: exp_global.model_file
+    val: 'results/03-adapt/{EXP}.mod'
+  - path: train
+    val: !SimpleTrainingRegimen
+      trainer: !AdamTrainer
+        alpha: 0.001
+      batcher: !WordSrcBatcher
+        avg_batch_size: 64
+      dev_zero: True
+      run_for_epochs: 20
+      src_file: 'data/SRC1_eng/ted-train.orig.spm8000.SRC1'
+      trg_file: 'data/SRC1_eng/ted-train.mtok.spm8000.eng'
+      dev_tasks:
+        - !AccuracyEvalTask
+          eval_metrics: bleu
+          src_file: 'data/SRC1_eng/ted-dev.orig.spm8000.SRC1'
+          ref_file: 'data/SRC1_eng/ted-dev.mtok.eng'
+          hyp_file: 'results/03-adapt/{EXP}.dev_hyp'
+        - !LossEvalTask
+          src_file: 'data/SRC1_eng/ted-dev.orig.spm8000.SRC1'
+          ref_file: 'data/SRC1_eng/ted-dev.mtok.spm8000.eng'
+  - path: evaluate
+    val:
+    - !AccuracyEvalTask
+      eval_metrics: bleu
+      src_file: 'data/SRC1_eng/ted-dev.orig.spm8000.SRC1'
+      ref_file: 'data/SRC1_eng/ted-dev.mtok.eng'
+      hyp_file: 'results/03-adapt/{EXP}.dev_hyp'
+    - !AccuracyEvalTask
+      eval_metrics: bleu
+      src_file: 'data/SRC1_eng/ted-test.orig.spm8000.SRC1'
+      ref_file: 'data/SRC1_eng/ted-test.mtok.eng'
+      hyp_file: 'results/03-adapt/{EXP}.tst_hyp'
