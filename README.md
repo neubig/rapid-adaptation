@@ -19,7 +19,7 @@ For convenience, we provide a pre-processed version of the data, which can be do
     wget http://www.phontron.com/download/rapid-annotation-data.tar.gz
     tar -xzf rapid-annotation-data.tar.gz
 
-If you want to see how we did preprocessing, you can take a look at the `data-script` directory.
+If you want to see how we did preprocessing, you can take a look at the `data-script` directory. The sentencepiece models used to perform tokenization can be downloaded [here](http://www.phontron.com/download/rapid-annotation-spm.tar.gz) if you need them (you shouldn't to run experiments, as the pre-tokenized data is included).
 
 ## Running Experiments
 
