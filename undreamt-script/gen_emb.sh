@@ -1,12 +1,7 @@
-# On tir server
-#fasttext="/projects/tir1/tools/fastText-0.1.0/fasttext"
-#dir="/home/gneubig/exp/multiling-exp/data"
-#out_dir="/projects/tir1/users/junjieh/Research/undreamt/data"
-
-# On lor server
-fasttext="/home/junjieh/usr2/Research/multiling-exp/scripts/fastText/fasttext"
-dir="/home/junjieh/usr2/Research/multiling-exp/data"
-out_dir="/home/junjieh/usr2/Research/multiling-exp/embed"
+# Path to fastText (https://github.com/facebookresearch/fastText.git)
+fasttext="$PWD/fastText/fasttext"
+dir="$PWD/data"
+out_dir="$PWD/embed"
 
 # train bilingual embeddings
 for src in aze bel glg slk; do

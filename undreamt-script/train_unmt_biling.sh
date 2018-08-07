@@ -1,11 +1,12 @@
-multiling="/usr2/data/junjieh/Research/multiling-exp/"
-dir="/usr2/data/junjieh/Research/multiling-exp/data"
-data_dir="/usr2/data/junjieh/data/multiling"
-undreamt="/usr2/data/junjieh/Research/undreamt"
-cd $undreamt
+# Path to undreamt (https://github.com/artetxem/undreamt.git)
+undreamt="$PWD/undreamt"
+out_dir="$PWD/results/undreamt"
+dir="$PWD/embed"
+data_dir="$PWD/data"
 
+cd $undreamt
 for src in aze bel glg slk; do
-  output="$multiling/output/${src}_eng"
+  output="$out_dir/${src}_eng"
   mkdir -p $output
   python train.py \
   --src $data_dir/${src}_eng/ted-train.orig.spm8000.${src} \

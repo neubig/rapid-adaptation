@@ -1,6 +1,8 @@
-mosesdecoder="/home/data/LoReHLT17/internal/MT/tools/mosesdecoder"
-dir="/usr2/data/junjieh/data/multiling"
-out_dir="/usr2/data/junjieh/Research/multiling-exp/data"
+# Path to mosesdecoder (https://github.com/moses-smt/mosesdecoder.git)
+mosesdecoder="mosesdecoder"  
+
+dir="data/"
+out_dir="data/"
 mkdir -p $out_dir/all_eng
 
 echo "${mosesdecoder}/bin/lmplz -o 5 < $dir/all_eng/ted-train.mtok.spm8000.eng > $out_dir/all_eng/ted-train.mtok.spm8000.eng.lm5.arpa"

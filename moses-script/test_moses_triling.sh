@@ -1,9 +1,13 @@
-mosesdecoder="/home/data/LoReHLT17/internal/MT/tools/mosesdecoder"
-dir="/usr2/data/junjieh/Research/multiling-exp/data"
-out_dir="/usr2/data/junjieh/Research/multiling-exp/moses"
-spm_dir="/home/junjieh/usr2/Research/multiling-exp/spm"
-spm="/home/data/LoReHLT17/internal/MT/tools/sentencepiece/src"
-lm="/usr2/data/junjieh/Research/multiling-exp/data/all_eng/ted-train.mtok.spm8000.eng.lm5.bin"
+# Path to mosesdecoder (https://github.com/moses-smt/mosesdecoder.git)
+mosesdecoder="mosesdecoder"
+
+# Path to SentencePiece (https://github.com/google/sentencepiece.git)
+spm="sentencepiece/src"
+
+dir="data/"
+out_dir="results/moses"
+spm_dir="spm/"
+lm="data/all_eng/ted-train.mtok.spm8000.eng.lm5.bin"
 
 a1=("azetur" "belrus" "glgpor" "slkces")
 a2=("aze" "bel" "glg" "slk")

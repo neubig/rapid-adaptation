@@ -1,22 +1,19 @@
-# On tir server
-#vecmap="/projects/tir1/users/junjieh/Research/vecmap"
-#undreamt="/projects/tir1/users/junjieh/Research/undreamt"
-
-vecmap="/home/junjieh/usr2/Research/vecmap"
-undreamt="/home/junjieh/usr2/Research/vecmap"
+# path to vecmap (https://github.com/artetxem/vecmap.git)
+vecmap="$PWD/vecmap"
+dir="$PWD"
 
 cd $vecmap
-trg_vec="${undreamt}/data/all_eng/eng.vec"
-trg_norm_vec="${undreamt}/data/all_eng/eng.norm.vec"
+trg_vec="${dir}/embed/all_eng/eng.vec"
+trg_norm_vec="${dir}/embed/all_eng/eng.norm.vec"
 echo "python3 normalize_embeddings.py unit center -i ${trg_vec} -o ${trg_norm_vec}"
 python3 normalize_embeddings.py unit center -i ${trg_vec} -o ${trg_norm_vec}
 echo "Finish normalize eng embeddings"
 
 for src in aze bel glg slk azetur belrus glgpor slkces ; do  # all allbutaze allbutbel allbutglg allbutslk
-	src_vec="${undreamt}/data/${src}_eng/${src}.vec"
-	src_norm_vec="${undreamt}/data/${src}_eng/${src}.norm.vec"
-	src_map_vec="${undreamt}/data/${src}_eng/${src}.norm.map.vec"
-	trg_map_vec="${undreamt}/data/${src}_eng/eng.norm.map.vec"
+	src_vec="${dir}/embed/${src}_eng/${src}.vec"
+	src_norm_vec="${dir}/embed/${src}_eng/${src}.norm.vec"
+	src_map_vec="${dir}/embed/${src}_eng/${src}.norm.map.vec"
+	trg_map_vec="${dir}/embed/${src}_eng/eng.norm.map.vec"
 	echo "python3 normalize_embeddings.py unit center -i ${src_vec} -o ${src_norm_vec}"
 	python3 normalize_embeddings.py unit center -i ${src_vec} -o ${src_norm_vec}
 	echo "Finish normalize ${src} embeddings"
@@ -26,4 +23,4 @@ for src in aze bel glg slk azetur belrus glgpor slkces ; do  # all allbutaze all
 	echo "Finish mapping $src to English space"
 done
 
-cd $undreamt
+cd $dir

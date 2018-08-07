@@ -1,7 +1,9 @@
-mosesdecoder="/home/data/LoReHLT17/internal/MT/tools/mosesdecoder"
-dir="/usr2/data/junjieh/data/multiling"
-out_dir="/usr2/data/junjieh/Research/multiling-exp/moses"
-lm="/usr2/data/junjieh/Research/multiling-exp/data/all_eng/ted-train.mtok.spm8000.eng.lm5.bin"
+# Path to mosesdecoder (https://github.com/moses-smt/mosesdecoder.git)
+mosesdecoder="mosesdecoder"  
+
+dir="data"
+out_dir="results/moses"
+lm="data/all_eng/ted-train.mtok.spm8000.eng.lm5.bin"
 
 for src in aze bel glg slk; do
 	mkdir -p "${out_dir}/${src}_eng"
